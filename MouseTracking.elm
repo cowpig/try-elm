@@ -17,23 +17,18 @@ main =
 -- Model
 type alias Model = {
     x : Int,
-    y : Int
+    y : Int,
+    mousedown : Bool
 }
- 
+
 init : ( Model, Cmd Msg )
-init = ( { x = 0, y = 0 }, Cmd.none )
+init = ( { x = 0, y = 0, mousedown = False }, Cmd.none )
+
 
 -- Messages
-type Msg = 
-    MoveMsg Mouse.Position
-    --UpMsg Mouse.Position | 
-    --DownMsg Mouse.Position
-
-
--- Handler
-mouseMsgHandler : Mouse.Position -> Msg
-mouseMsgHandler position =
-    MoveMsg position
+type Msg = MoveMsg Mouse.Position |
+    UpMsg Mouse.Position | 
+    DownMsg Mouse.Position
 
 
 -- View
@@ -48,18 +43,25 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         MoveMsg position ->
-            ( {x = position.x, y = position.y}, Cmd.none )
+            ( {model | x = position.x, y = position.y}, Cmd.none )
+        UpMsg position ->
+            ( {x = position.x, y = position.y, mousedown = False}, Cmd.none )
+        DownMsg position ->
+            ( {x = position.x, y = position.y, mousedown = True}, Cmd.none )
 
-stringify : Mouse.Position -> String
-stringify pos =
-    toString pos.x ++ ", " ++ toString pos.y
+stringify : Model -> String
+stringify model =
+    if model.mousedown then
+        toString model.x ++ ", " ++ toString model.y ++ " click!"
+    else
+        toString model.x ++ ", " ++ toString model.y
 
 
 -- Subscriptions
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch [
-        Mouse.moves mouseMsgHandler
-        --Mouse.ups UpMsg,
-        --Mouse.downs DownMsg
+        Mouse.moves MoveMsg,
+        Mouse.ups UpMsg,
+        Mouse.downs DownMsg
     ]
