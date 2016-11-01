@@ -124,7 +124,6 @@ sliderWidth model = model.sliderBotRight.x - model.sliderTopLeft.x
 wrapperStyle : Model -> Attribute msg
 wrapperStyle model =
     style [
-            ("position", "absolute"),
             ("top", px model.sliderTopLeft.y),
             ("left", px model.sliderTopLeft.x),
             ("height", px (model.sliderBotRight.y - model.sliderTopLeft.y)),
