@@ -125,6 +125,7 @@ sliderWidth model = model.sliderBotRight.x - model.sliderTopLeft.x
 wrapperStyle : Model -> Attribute msg
 wrapperStyle model =
     style [
+            ("position", "absolute"),
             ("top", px model.sliderTopLeft.y),
             ("left", px model.sliderTopLeft.x),
             ("height", px (model.sliderBotRight.y - model.sliderTopLeft.y)),
@@ -136,14 +137,13 @@ selectorStyle model =
     let
         midX = round (
                 toFloat (sliderWidth model) * 
-                (toFloat model.selectorVal / 100) + 
-                toFloat model.sliderTopLeft.x
+                (toFloat model.selectorVal / 100)
             )
         left = midX - round (toFloat model.selectorWidth / 2)
     in
         style [
             ("position", "absolute"),
-            ("top", px model.sliderTopLeft.y),
+            ("top", px 0),
             ("left", px left),
             ("height", px (sliderHeight model)),
             ("width", px model.selectorWidth),
@@ -154,8 +154,8 @@ sliderStyle : Model -> Attribute msg
 sliderStyle model =
     style [
         ("position", "absolute"),
-        ("top", px (model.sliderTopLeft.y + model.sliderYPad)),
-        ("left", px (model.sliderTopLeft.x)),
+        ("top", px model.sliderYPad),
+        ("left", px 0),
         ("height", px (sliderHeight model - (2 * model.sliderYPad))),
         ("width", px (sliderWidth model)),
         ("background-color", "red")
