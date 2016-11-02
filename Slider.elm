@@ -87,6 +87,7 @@ update msg model =
         DragEnd position ->
             ({model | drag = Nothing}, Cmd.none)
 
+
 sliderValFromMousePos : Model -> Position -> Int
 sliderValFromMousePos model position =
     let _ = log "sliderValFromMousePos" (model, position) in
